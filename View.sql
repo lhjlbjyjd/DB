@@ -17,7 +17,7 @@ CREATE OR REPLACE VIEW VIEW_USER_BIRTHDAY AS
   FROM
     "USER"
   WHERE
-    birdth_dt = CURRENT_DATE
+    EXTRACT(DOY FROM birdth_dt) = EXTRACT(DOY FROM CURRENT_DATE)
   );
 
 /* Вышматовские предметы */
@@ -55,7 +55,7 @@ CREATE OR REPLACE VIEW VIEW_DEPARTMENT_BIRTHDAY AS
   FROM
     DEPARTMENT
   WHERE
-    foundation_dt = CURRENT_DATE
+    EXTRACT(DOY FROM foundation_dt) = EXTRACT(DOY FROM CURRENT_DATE)
   );
 
 /* -------------------------- НА 2 БАЛЛА -------------------------------*/
