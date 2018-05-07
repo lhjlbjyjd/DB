@@ -70,7 +70,8 @@ VALUES (1, 1, true)
   ,(3, 3, true)
   ,(4, 4, DEFAULT)
   ,(5, 5, true)
-  ,(6, 3, true);
+  ,(6, 3, true)
+  ,(2, 4, false);
 
 /* TEACHER_X_STUDENT */
 INSERT INTO "public"."teacher_x_student" ("teacher_user_id", "student_user_id", "lection_flg")
