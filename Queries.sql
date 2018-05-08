@@ -106,7 +106,7 @@ FROM
     educational_structure AS es
       ON "USER".pulpit_structure_id = es.structure_id
   WHERE
-    structure_id = 1
+    structure_nm = 'ФПМИ'
   ) as t
 INNER JOIN
   TEACHER_X_STUDENT AS TXS
