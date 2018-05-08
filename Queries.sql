@@ -78,7 +78,7 @@ GROUP BY
 
 /* Количество людей, у которых преподают люди из ФПМИ */
 SELECT
-  COUNT(user_id)
+  student_user_id
 FROM
   (SELECT
     user_id
@@ -88,4 +88,6 @@ FROM
     WHERE
       structure_id = 1
   ) as t INNER JOIN TEACHER_X_STUDENT AS TXS
-    ON t.user_id = TXS.teacher_user_id;
+    ON t.user_id = TXS.teacher_user_id
+GROUP BY
+  student_user_id
