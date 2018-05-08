@@ -14,6 +14,7 @@ CREATE OR REPLACE VIEW VIEW_USER_BIRTHDAY AS
   (SELECT
     first_nm
     ,last_nm
+    ,(CASE WHEN NOT city_nm = 'Москва' THEN NULL ELSE phone_no END) AS phone_no
   FROM
     "USER"
   WHERE
