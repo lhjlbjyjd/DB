@@ -2,10 +2,19 @@
 SELECT
   group_id
 FROM
-  "USER" INNER JOIN USER_X_SUBJECT
-    ON "USER".user_id = user_x_subject.user_id
+  (SELECT
+    group_id
+    ,subject_id
+   FROM
+     USER_X_SUBJECT
+   INNER JOIN
+     "USER" ON user_x_subject.user_id = "USER".user_id
+  ) AS t
+INNER JOIN
+  SUBJECT ON t.subject_id = subject.subject_id
 WHERE
-  teacher_flg AND subject_id = 2;
+  subject_nm = 'Матан' AND group_id NOTNULL;
+
 
 /* Какой преподаватель преподаёт больше всего предметов */
 SELECT
@@ -18,14 +27,13 @@ FROM
     ,COUNT("USER".user_id) as cnt
   FROM
     "USER"
-    INNER JOIN USER_X_SUBJECT
-      ON "USER".user_id = user_x_subject.user_id
+  INNER JOIN
+    USER_X_SUBJECT ON "USER".user_id = user_x_subject.user_id
   WHERE
     teacher_flg
   GROUP BY
     first_nm
     , last_nm
-    , "USER".user_id
   HAVING
     COUNT("USER".user_id) = MAX("USER".user_id)
   ) AS tmp
@@ -37,14 +45,13 @@ WHERE
       ,COUNT("USER".user_id) as cnt
     FROM
       "USER"
-      INNER JOIN USER_X_SUBJECT
-        ON "USER".user_id = user_x_subject.user_id
+    INNER JOIN
+      USER_X_SUBJECT ON "USER".user_id = user_x_subject.user_id
     WHERE
       teacher_flg
     GROUP BY
       first_nm
       , last_nm
-      , "USER".user_id
     HAVING
       COUNT("USER".user_id) = MAX("USER".user_id)
     ) as t
@@ -55,10 +62,17 @@ WHERE
 SELECT
   specialization_nm
 FROM
-  SPECIALIZATION AS S INNER JOIN "GROUP" AS G
-    ON S.specialization_id = G.specialization_id
+  (SELECT
+    department_id
+    ,specialization_nm
+  FROM
+    SPECIALIZATION AS S INNER JOIN "GROUP" AS G
+      ON S.specialization_id = G.specialization_id
+  ) AS t
+INNER JOIN
+  DEPARTMENT ON t.department_id = DEPARTMENT.department_id
 WHERE
-  department_id = 1
+  department_nm = 'ФИВТ'
 GROUP BY
   specialization_nm;
 
@@ -68,17 +82,19 @@ SELECT
   first_nm
   ,last_nm
 FROM
-  "USER" AS U INNER JOIN EDUCATIONAL_STRUCTURE AS ES
+  "USER" AS U
+    INNER JOIN
+  EDUCATIONAL_STRUCTURE AS ES
     ON U.pulpit_structure_id = ES.structure_id
 WHERE
-  structure_id = 4
+  structure_nm = 'Вышмат'
 GROUP BY
   first_nm
   ,last_nm;
 
 /* Количество людей, у которых преподают люди из ФПМИ */
 SELECT
-  student_user_id
+  COUNT(student_user_id)
 FROM
   (SELECT
     user_id
@@ -89,5 +105,3 @@ FROM
       structure_id = 1
   ) as t INNER JOIN TEACHER_X_STUDENT AS TXS
     ON t.user_id = TXS.teacher_user_id
-GROUP BY
-  student_user_id
